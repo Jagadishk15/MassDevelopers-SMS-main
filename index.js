@@ -58,8 +58,8 @@ app.post("/api/form", upload.single('data'), (req, res) => {
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "xxxxxxxxxx@gmail.com",
-      pass: "xxxxxxxxxxxxxxx"
+      user: "jagadishkarthikeyan619@gmail.com",
+      pass: "qmfn zoyx xexr pcvh"
     },
     tls: {
       rejectUnauthorized: false
@@ -68,7 +68,7 @@ app.post("/api/form", upload.single('data'), (req, res) => {
   //Preparing the mailOptions object
   var mailOptions = {
     from: `${req.body.email}`,
-    to: "xxxxxxxxxx@gmail.com",
+    to: "jagadishkarthikeyan619@gmail.com",
     subject: "New Message",
     text: req.body.subject,
     html: emailcontent,
@@ -122,8 +122,8 @@ app.post("/api/form-1", upload.single('data'), (req, res) => {
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "xxxxxxxxxx@gmail.com",
-      pass: "xxxxxxxxxxxxxxx"
+      user: "jagadishkarthikeyan619@gmail.com",
+      pass: "qmfn zoyx xexr pcvh"
     },
     tls: {
       rejectUnauthorized: false
@@ -132,7 +132,7 @@ app.post("/api/form-1", upload.single('data'), (req, res) => {
   //Preparing the mailOptions object
   var mailOptions = {
     from: `${req.body.email}`,
-    to: "xxxxxxxxxx@gmail.com",
+    to: "jagadishkarthikeyan619@gmail.com",
     subject: "Resume",
     text: req.body.subject,
     html: emailcontent,
@@ -195,8 +195,8 @@ app.post("/api/form-2", upload.single('data'), (req, res) => {
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "xxxxxxxxxx@gmail.com",
-      pass: "xxxxxxxxxxxxxxx"
+      user: "jagadishkarthikeyan619@gmail.com",
+      pass: "qmfn zoyx xexr pcvh"
     },
     tls: {
       rejectUnauthorized: false
@@ -205,7 +205,7 @@ app.post("/api/form-2", upload.single('data'), (req, res) => {
   //Preparing the mailOptions object
   var mailOptions = {
     from: `${req.body.email}`,
-    to: "xxxxxxxxxx@gmail.com",
+    to: "jagadishkarthikeyan619@gmail.com",
     subject: `${req.body.title}`,
     text: req.body.subject,
     html: emailcontent,
@@ -268,8 +268,8 @@ app.post("/api/form-3", upload.single('data'), (req, res) => {
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "xxxxxxxxxx@gmail.com",
-      pass: "xxxxxxxxxxxxxxx"
+      user: "jagadishkarthikeyan619@gmail.com",
+      pass: "qmfn zoyx xexr pcvh"
     },
     tls: {
       rejectUnauthorized: false
@@ -344,8 +344,8 @@ app.post("/api/form-4", upload.single('data'), (req, res) => {
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "xxxxxxxxxx@gmail.com",
-      pass: "xxxxxxxxxxxxxxx"
+      user: "jagadishkarthikeyan619@gmail.com",
+      pass: "qmfn zoyx xexr pcvh"
     },
     tls: {
       rejectUnauthorized: false
@@ -354,7 +354,7 @@ app.post("/api/form-4", upload.single('data'), (req, res) => {
   //Preparing the mailOptions object
   var mailOptions = {
     from: `${req.body.email}`,
-    to: "xxxxxxxxxx@gmail.com",
+    to: "jagadishkarthikeyan619@gmail.com",
     subject: `${req.body.title}`,
     text: req.body.subject,
     html: emailcontent,
