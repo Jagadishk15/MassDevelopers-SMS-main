@@ -342,7 +342,7 @@ app.post("/api/form-3", upload.single('data'), (req, res) => {
 
   var mailOptions = {
     from: `${req.body.email}`,
-    to: "xxxxxxxxxx@gmail.com",
+    to:"jagadishkarthikeyan619@gmail.com",
     subject: `${req.body.title}`,
     text: req.body.subject,
     html: emailcontent,
