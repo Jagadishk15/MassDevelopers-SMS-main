@@ -11,50 +11,114 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-
 const storage = multer.diskStorage({
-  // destination: './upload/data',
- 
-
-  filename: (req, file, cb) =>{
-
-      return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
+  filename: (req, file, cb) => {
+    return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
   }
-  
-})
+});
 
 const upload = multer({
   storage: storage,
-//  limits: {fileSize: 1024 * 1800}
-})
-
+});
 
 app.get('/', (req, res) => {
   res.send('Hey this is my API running 🥳')
-})
+});
+
+// Shared email template styles
+const emailStyles = `
+  <style>
+    .email-container {
+      max-width: 600px;
+      margin: 0 auto;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333333;
+    }
+    .header {
+      background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+      padding: 30px 20px;
+      text-align: center;
+      border-radius: 8px 8px 0 0;
+    }
+    .header h1 {
+      color: #ffffff;
+      margin: 0;
+      font-size: 28px;
+      font-weight: 600;
+    }
+    .content {
+      background-color: #ffffff;
+      padding: 30px;
+      border: 1px solid #e1e1e1;
+      border-radius: 0 0 8px 8px;
+    }
+    .detail-item {
+      margin: 15px 0;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .label {
+      font-weight: bold;
+      color: #2c3e50;
+      display: inline-block;
+      width: 120px;
+    }
+    .value {
+      color: #555555;
+    }
+    .message {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-radius: 4px;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      color: #666666;
+      font-size: 12px;
+    }
+  </style>
+`;
 
 app.post("/api/form", upload.single('data'), (req, res) => {
-
-
-
   console.log(req.body);
-  //Formating content to be send
-  var emailcontent = `<h3> Contact Details</h3>
-  <p align="center"><strong style="color:#55BDE8; font-size:3em; font-weight:bolder; text-align:center; margin:0px;">THANK YOU</strong><br /><br /></p>
-                     <ul>
-                      <li>name: ${req.body.name}</li>
-                      <li>email : ${req.body.email}</li>
-                     </ul>
-                     <h2>Message</h2>
-                      <p>message: ${req.body.subject}</p>
-                          `;
+  
+  var emailcontent = `
+    ${emailStyles}
+    <div class="email-container">
+      <div class="header">
+        <h1>New Contact Message</h1>
+      </div>
+      <div class="content">
+        <div class="detail-item">
+          <span class="label">Name:</span>
+          <span class="value">${req.body.name}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Email:</span>
+          <span class="value">${req.body.email}</span>
+        </div>
+        <div class="message">
+          <h3 style="color: #2c3e50; margin-top: 0;">Message</h3>
+          <p>${req.body.subject}</p>
+        </div>
+      </div>
+      <div class="footer">
+        <p>This email was sent via the contact form</p>
+      </div>
+    </div>
+  `;
+
   var data = req.file;
   if (data.size >= 15000000) {
     return res.send({
       result: false,
-      message: "Your file is greater then 15MB"
+      message: "Your file is greater than 15MB"
     });
-  } else { 
+  }
+
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -65,7 +129,7 @@ app.post("/api/form", upload.single('data'), (req, res) => {
       rejectUnauthorized: false
     }
   });
-  //Preparing the mailOptions object
+
   var mailOptions = {
     from: `${req.body.email}`,
     to: "jagadishkarthikeyan619@gmail.com",
@@ -75,11 +139,11 @@ app.post("/api/form", upload.single('data'), (req, res) => {
     attachments: [
       {
         filename: data.originalname,
-        path : data.path
+        path: data.path
       }
-     ]
+    ]
   };
-  //Sending email using transporter function
+
   transporter.sendMail(mailOptions, function(error, info) {
     if (error) {
       console.log(error);
@@ -95,30 +159,36 @@ app.post("/api/form", upload.single('data'), (req, res) => {
       });
     }
   });
-  // return res.send({
-  //   result: true,
-  //   message: "Mail sent"
-  // });
-}
 });
 
-
-
 app.post("/api/form-1", upload.single('data'), (req, res) => {
-
   console.log(req.body);
-  //Formating content to be send
+  
   var emailcontent = `
-  <p align="center"><strong style="color:#442370; font-size:2.5em; font-weight:bolder; text-align:center; margin:0px;">${req.body.title}</strong><br /><br /></p>
-                          `;
+    ${emailStyles}
+    <div class="email-container">
+      <div class="header">
+        <h1>${req.body.title}</h1>
+      </div>
+      <div class="content">
+        <div class="message">
+          <p>Please find the attached resume for your review.</p>
+        </div>
+      </div>
+      <div class="footer">
+        <p>Resume submission via application portal</p>
+      </div>
+    </div>
+  `;
+
   var data = req.file;
   if (data.size >= 15000000) {
-    // url.push(data);
     return res.send({
       result: false,
-      message: "Your file is greater then 15MB"
+      message: "Your file is greater than 15MB"
     });
-  } else { 
+  }
+
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -129,7 +199,7 @@ app.post("/api/form-1", upload.single('data'), (req, res) => {
       rejectUnauthorized: false
     }
   });
-  //Preparing the mailOptions object
+
   var mailOptions = {
     from: `${req.body.email}`,
     to: "jagadishkarthikeyan619@gmail.com",
@@ -139,11 +209,11 @@ app.post("/api/form-1", upload.single('data'), (req, res) => {
     attachments: [
       {
         filename: data.originalname,
-        path : data.path
+        path: data.path
       }
-     ]
+    ]
   };
-  //Sending email using transporter function
+
   transporter.sendMail(mailOptions, function(error, info) {
     if (error) {
       console.log(error);
@@ -159,39 +229,37 @@ app.post("/api/form-1", upload.single('data'), (req, res) => {
       });
     }
   });
-  // return res.send({
-  //   result: true,
-  //   message: "Mail sent"
-  // });
-}
 });
-
-
-//Form-2
 
 app.post("/api/form-2", upload.single('data'), (req, res) => {
-
   console.log(req.body);
-  //Formating content to be send
+  
   var emailcontent = `
-  <div style="background-color:#b9f7ff;padding-bottom: 10px;">
-  <p align="center"><strong style="color:#442370; font-size:2.5em; font-weight:bolder; text-align:center; margin:0px;">${req.body.title}</strong><br /><br /></p>
-                     <ul>
-                      <p style="font-size: 17px;"><b>Name :</b> ${req.body.name}</p>
-                      <p style="font-size: 17px;"><b>Phone No :</b> ${req.body.phone}</p>
-                      <p style="font-size: 17px;"><b>Type :</b> ${req.body.type}</p>
-                     </ul>
-                     </div>
-                          `;
-  // var data = req.file;
-  // console.log(data,"jjjjjjjjjjjjjjjjjjjjjjjjjj");
-  // if (data.size >= 15000000) {
-  //   // url.push(data);
-  //   return res.send({
-  //     result: false,
-  //     message: "Your file is greater then 15MB"
-  //   });
-  // } else { 
+    ${emailStyles}
+    <div class="email-container">
+      <div class="header">
+        <h1>${req.body.title}</h1>
+      </div>
+      <div class="content">
+        <div class="detail-item">
+          <span class="label">Name:</span>
+          <span class="value">${req.body.name}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Phone:</span>
+          <span class="value">${req.body.phone}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Type:</span>
+          <span class="value">${req.body.type}</span>
+        </div>
+      </div>
+      <div class="footer">
+        <p>Inquiry submitted through website</p>
+      </div>
+    </div>
+  `;
+
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -202,21 +270,15 @@ app.post("/api/form-2", upload.single('data'), (req, res) => {
       rejectUnauthorized: false
     }
   });
-  //Preparing the mailOptions object
+
   var mailOptions = {
     from: `${req.body.email}`,
     to: "jagadishkarthikeyan619@gmail.com",
     subject: `${req.body.title}`,
     text: req.body.subject,
     html: emailcontent,
-    // attachments: [
-    //   {
-    //     filename: data.originalname,
-    //     path : data.path
-    //   }
-    //  ]
   };
-  //Sending email using transporter function
+
   transporter.sendMail(mailOptions, function(error, info) {
     if (error) {
       console.log(error);
@@ -232,39 +294,41 @@ app.post("/api/form-2", upload.single('data'), (req, res) => {
       });
     }
   });
-  // return res.send({
-  //   result: true,
-  //   message: "Mail sent"
-  // });
-// }
 });
-
-//Form-3
 
 app.post("/api/form-3", upload.single('data'), (req, res) => {
-
   console.log(req.body);
-  //Formating content to be send
+  
   var emailcontent = `
-  <div style="background-color:#b9f7ff;padding-bottom: 10px;">
-  <p align="center"><strong style="color:#442370; font-size:2.5em; font-weight:bolder; text-align:center; margin:0px;">${req.body.title}</strong><br /><br /></p>
-                     <ul>
-                      <p style="font-size: 17px;"><b>Name :</b> ${req.body.name}</p>
-                      <p style="font-size: 17px;"><b>Phone No :</b> ${req.body.phone}</p>
-                      <p style="font-size: 17px;"><b>E-Mail :</b> ${req.body.mail}</p>
-                      <p style="font-size: 17px;"><b>Description :</b> ${req.body.des}</p>
-                     </ul>
-                     </div>
-                          `;
-  // var data = req.file;
-  // console.log(data,"jjjjjjjjjjjjjjjjjjjjjjjjjj");
-  // if (data.size >= 15000000) {
-  //   // url.push(data);
-  //   return res.send({
-  //     result: false,
-  //     message: "Your file is greater then 15MB"
-  //   });
-  // } else { 
+    ${emailStyles}
+    <div class="email-container">
+      <div class="header">
+        <h1>${req.body.title}</h1>
+      </div>
+      <div class="content">
+        <div class="detail-item">
+          <span class="label">Name:</span>
+          <span class="value">${req.body.name}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Phone:</span>
+          <span class="value">${req.body.phone}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Email:</span>
+          <span class="value">${req.body.mail}</span>
+        </div>
+        <div class="message">
+          <h3 style="color: #2c3e50; margin-top: 0;">Description</h3>
+          <p>${req.body.des}</p>
+        </div>
+      </div>
+      <div class="footer">
+        <p>Contact request submitted via website</p>
+      </div>
+    </div>
+  `;
+
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -275,21 +339,15 @@ app.post("/api/form-3", upload.single('data'), (req, res) => {
       rejectUnauthorized: false
     }
   });
-  //Preparing the mailOptions object
+
   var mailOptions = {
     from: `${req.body.email}`,
-    to: "xxxxxxxxxx@gmail.com.com",
+    to: "xxxxxxxxxx@gmail.com",
     subject: `${req.body.title}`,
     text: req.body.subject,
     html: emailcontent,
-    // attachments: [
-    //   {
-    //     filename: data.originalname,
-    //     path : data.path
-    //   }
-    //  ]
   };
-  //Sending email using transporter function
+
   transporter.sendMail(mailOptions, function(error, info) {
     if (error) {
       console.log(error);
@@ -305,42 +363,49 @@ app.post("/api/form-3", upload.single('data'), (req, res) => {
       });
     }
   });
-  // return res.send({
-  //   result: true,
-  //   message: "Mail sent"
-  // });
-// }
 });
 
-//Form-4
-
 app.post("/api/form-4", upload.single('data'), (req, res) => {
-
   console.log(req.body);
-  //Formating content to be send
+  
   var emailcontent = `
-  <div style="background-color:#b9f7ff;padding-bottom: 10px;">
-  <p align="center"><strong style="color:#442370; font-size:2.5em; font-weight:bolder; text-align:center; margin:0px;">${req.body.title}</strong><br /><br /></p>
-                     <ul>
-                      <p style="font-size: 17px;"><b>Name :</b> ${req.body.name}</p>
-                      <p style="font-size: 17px;"><b>Phone No :</b> ${req.body.phone}</p>
-                      <p style="font-size: 17px;"><b>E-mail :</b> ${req.body.mail}</p>
-                      <p style="font-size: 17px;"><b>Description :</b> ${req.body.des}</p>
-                      <p style="font-size: 17px;"><b>Product :</b> ${req.body.product}</p>
-                      <p style="font-size: 17px;"><b>Square Feet :</b> ${req.body.sqft}</p>
-                      <p> </p>
-                     </ul>
+    ${emailStyles}
+    <div class="email-container">
+      <div class="header">
+        <h1>${req.body.title}</h1>
+      </div>
+      <div class="content">
+        <div class="detail-item">
+          <span class="label">Name:</span>
+          <span class="value">${req.body.name}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Phone:</span>
+          <span class="value">${req.body.phone}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Email:</span>
+          <span class="value">${req.body.mail}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Product:</span>
+          <span class="value">${req.body.product}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Square Feet:</span>
+          <span class="value">${req.body.sqft}</span>
+        </div>
+        <div class="message">
+          <h3 style="color: #2c3e50; margin-top: 0;">Description</h3>
+          <p>${req.body.des}</p>
+        </div>
+      </div>
+      <div class="footer">
+        <p>Product inquiry submitted via website</p>
+      </div>
     </div>
-                          `;
-  // var data = req.file;
-  // console.log(data,"jjjjjjjjjjjjjjjjjjjjjjjjjj");
-  // if (data.size >= 15000000) {
-  //   // url.push(data);
-  //   return res.send({
-  //     result: false,
-  //     message: "Your file is greater then 15MB"
-  //   });
-  // } else { 
+  `;
+
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -351,21 +416,15 @@ app.post("/api/form-4", upload.single('data'), (req, res) => {
       rejectUnauthorized: false
     }
   });
-  //Preparing the mailOptions object
+
   var mailOptions = {
     from: `${req.body.email}`,
     to: "jagadishkarthikeyan619@gmail.com",
     subject: `${req.body.title}`,
     text: req.body.subject,
     html: emailcontent,
-    // attachments: [
-    //   {
-    //     filename: data.originalname,
-    //     path : data.path
-    //   }
-    //  ]
   };
-  //Sending email using transporter function
+
   transporter.sendMail(mailOptions, function(error, info) {
     if (error) {
       console.log(error);
@@ -381,11 +440,6 @@ app.post("/api/form-4", upload.single('data'), (req, res) => {
       });
     }
   });
-  // return res.send({
-  //   result: true,
-  //   message: "Mail sent"
-  // });
-// }
 });
 
 const PORT = process.env.PORT || 3001;
