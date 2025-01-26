@@ -122,7 +122,7 @@ app.post("/api/form", upload.single('data'), (req, res) => {
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "massdeveleopers.civil@gmail.com",
+      user: "massdevelopers.civil@gmail.com",
       pass: "tjus blks tvrd xhtu"
     },
     tls: {
@@ -132,7 +132,7 @@ app.post("/api/form", upload.single('data'), (req, res) => {
 
   var mailOptions = {
     from: `${req.body.email}`,
-    to: "massdeveleopers.civil@gmail.com",
+    to: "massdevelopers.civil@gmail.com",
     subject: "New Message",
     text: req.body.subject,
     html: emailcontent,
@@ -192,7 +192,7 @@ app.post("/api/form-1", upload.single('data'), (req, res) => {
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "massdeveleopers.civil@gmail.com",
+      user: "massdevelopers.civil@gmail.com",
       pass: "tjus blks tvrd xhtu"
     },
     tls: {
@@ -202,7 +202,7 @@ app.post("/api/form-1", upload.single('data'), (req, res) => {
 
   var mailOptions = {
     from: `${req.body.email}`,
-    to: "massdeveleopers.civil@gmail.com",
+    to: "massdevelopers.civil@gmail.com",
     subject: "Resume",
     text: req.body.subject,
     html: emailcontent,
@@ -263,7 +263,7 @@ app.post("/api/form-2", upload.single('data'), (req, res) => {
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "massdeveleopers.civil@gmail.com",
+      user: "massdevelopers.civil@gmail.com",
       pass: "tjus blks tvrd xhtu"
     },
     tls: {
@@ -273,7 +273,7 @@ app.post("/api/form-2", upload.single('data'), (req, res) => {
 
   var mailOptions = {
     from: `${req.body.email}`,
-    to: "massdeveleopers.civil@gmail.com",
+    to: "massdevelopers.civil@gmail.com",
     subject: `${req.body.title}`,
     text: req.body.subject,
     html: emailcontent,
@@ -332,7 +332,7 @@ app.post("/api/form-3", upload.single('data'), (req, res) => {
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "massdeveleopers.civil@gmail.com",
+      user: "massdevelopers.civil@gmail.com",
       pass: "tjus blks tvrd xhtu"
     },
     tls: {
@@ -342,7 +342,7 @@ app.post("/api/form-3", upload.single('data'), (req, res) => {
 
   var mailOptions = {
     from: `${req.body.email}`,
-    to:"massdeveleopers.civil@gmail.com",
+    to:"massdevelopers.civil@gmail.com",
     subject: `${req.body.title}`,
     text: req.body.subject,
     html: emailcontent,
@@ -409,7 +409,7 @@ app.post("/api/form-4", upload.single('data'), (req, res) => {
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "massdeveleopers.civil@gmail.com",
+      user: "massdevelopers.civil@gmail.com",
       pass: "tjus blks tvrd xhtu"
     },
     tls: {
@@ -419,7 +419,7 @@ app.post("/api/form-4", upload.single('data'), (req, res) => {
 
   var mailOptions = {
     from: `${req.body.email}`,
-    to: "massdeveleopers.civil@gmail.com",
+    to: "massdevelopers.civil@gmail.com",
     subject: `${req.body.title}`,
     text: req.body.subject,
     html: emailcontent,
